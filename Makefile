@@ -6,6 +6,10 @@ help:
 .PHONY: prep
 prep: src/constants.ts
 
+.PHONY: validate
+validate: prep
+	git diff --exit-code
+
 .PHONY: install
 install:
 	npm install

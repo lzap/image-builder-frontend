@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+      - name: Check generated source
+        run: make validate
       - name: Install dependencies
         run: npm ci
       - name: Check for manual changes to API
