@@ -1,37 +1,38 @@
+---
 name: Development checks
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   dev-check:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: 20
-        cache: 'npm'
-    - name: Install dependencies
-      run: npm ci
-    - name: Check for manual changes to API
-      run: npm run api:generate && [ -z "$(git status --porcelain=v1 2>/dev/null)" ] && echo "✓ No manual API changes." || echo "✗ API manually changed, please refer to the README for the procedure to follow for programmatically generated API endpoints." && [ -z "$(git status --porcelain=v1 2>/dev/null)" ]
-    - name: Check for circular dependencies
-      run: npm run circular
-    - name: Run build
-      run: npm run build
-    - name: Run lint check
-      run: npm run lint
-    - name: Run unit tests
-      run: npm run test:coverage
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./coverage/junit.xml
-        verbose: true
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Check for manual changes to API
+        run: npm run api:generate && [ -z "$(git status --porcelain=v1 2>/dev/null)" ] && echo "✓ No manual API changes." || echo "✗ API manually changed, please refer to the README for the procedure to follow for programmatically generated API endpoints." && [ -z "$(git status --porcelain=v1 2>/dev/null)" ]
+      - name: Check for circular dependencies
+        run: npm run circular
+      - name: Run build
+        run: npm run build
+      - name: Run lint check
+        run: npm run lint
+      - name: Run unit tests
+        run: npm run test:coverage
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/junit.xml
+          verbose: true
